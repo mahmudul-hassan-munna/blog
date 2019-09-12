@@ -60,6 +60,8 @@
                                         @elseif(Auth::user()->level==3)
                                             <a href="{{ url('register-user') }}">Create Manager</a>
                                             <a href="{{ url('customers') }}">Customers</a>
+                                        @elseif(Auth::user()->level==1)
+                                            <a href="{{ url('add-file') }}">Files</a>
                                         @endif
 
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\User_File;
+use Auth;
 
 class HomeController extends Controller
 {
@@ -49,6 +51,12 @@ class HomeController extends Controller
     {
         $customers=User::where('level',1)->get();
         return view('customers',compact('customers'));
+    }
+
+    public function addFile()
+    {
+        $customer_files=User_File::where('user_id',Auth::user()->id)->get();
+        return view('customer_files',compact('customer_files'));
     }
 
 }

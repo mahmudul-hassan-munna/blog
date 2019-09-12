@@ -22,4 +22,6 @@ Route::get('/register-user', 'HomeController@registerUser');
 Route::post('/register-user', 'HomeController@userCreate');
 
 Route::get('/customers', 'HomeController@customers');
+Route::get('/add-file', 'HomeController@addFile');
+
 
