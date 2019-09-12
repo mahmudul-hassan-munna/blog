@@ -8,7 +8,7 @@ class User_File extends Model
 {
     protected $table = 'user_files';
     protected $fillable = [
-        'path'
+        'path','user_id'
     ];
     
 }

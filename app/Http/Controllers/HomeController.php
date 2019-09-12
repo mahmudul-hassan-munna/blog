@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\User;
 use App\User_File;
 use Auth;
+use Redirect;
 
 class HomeController extends Controller
 {
@@ -57,6 +58,25 @@ class HomeController extends Controller
     {
         $customer_files=User_File::where('user_id',Auth::user()->id)->get();
         return view('customer_files',compact('customer_files'));
+    }
+
+    public function saveFile(Request $request)
+    {
+
+        $file = $request->file('file');
+        $destinationPath = 'uploads';
+        $file->move($destinationPath,$file->getClientOriginalName());
+
+        $upload_path='uploads/'.$file->getClientOriginalName();
+
+        User_File::create([
+            'path' => $upload_path,
+            'user_id' => Auth::user()->id
+        ]);
+
+        return Redirect::to('/add-file');
+        //return redirect()->route('add-file');
+
     }
 
 }
