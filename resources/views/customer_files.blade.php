@@ -24,7 +24,6 @@
 		    <tr>
 		      <th scope="row">{{++$key}}</th>
 		      <td><a href="{{ $row->path }}" target="_blank">View File</a></td>
-
 		      <td>{{ $row->created_at or null }}</td>
 		    </tr>
 		    @endforeach
