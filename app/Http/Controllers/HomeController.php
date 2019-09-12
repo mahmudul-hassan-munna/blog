@@ -7,6 +7,7 @@ use App\User;
 use App\User_File;
 use Auth;
 use Redirect;
+use Image;
 
 class HomeController extends Controller
 {
@@ -87,15 +88,55 @@ class HomeController extends Controller
         if(Auth::user()->level==1)
         {
             $file = $request->file('file');
+            //dd($file->getClientOriginalExtension());
             $destinationPath = 'uploads';
-            $file->move($destinationPath,$file->getClientOriginalName());
+            $extension=$file->getClientOriginalExtension();
+            $data = getimagesize($file);
 
-            $upload_path='uploads/'.$file->getClientOriginalName();
+            $width = $data[0];
+            if(isset($request->width))
+            {
+                $width=$request->width;
+            }
+            $height = $data[1];
+            if(isset($request->height))
+            {
+                $height=$request->height;
+            }
+
+            if($extension=='jpg' || $extension=='jpeg' || $extension=='png')
+            {
+                $upload_path = 'uploads/' . time().'.'.$extension;
+                Image::make($file->getRealPath())->resize($width, $height)->save($upload_path);
+            }
+            else
+            {
+                $file_name=time().'.'.$extension;
+                $file->move($destinationPath,$file_name);
+                $upload_path='uploads/'.$file_name;
+            }
+            
 
             User_File::create([
                 'path' => $upload_path,
                 'user_id' => Auth::user()->id
             ]);
+            return Redirect::to('/add-file');
+        }
+        else
+        {
+            return Redirect::to('/');
+        }
+    }
+
+    public function deleteFile(Request $request)
+    {
+        if(Auth::user()->level==1)
+        {
+            $user_file=User_File::find($request->id);
+            unlink($user_file->path);
+            $user_file->delete();
+
             return Redirect::to('/add-file');
         }
         else
