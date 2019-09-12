@@ -50,13 +50,13 @@ class HomeController extends Controller
 
     public function customers()
     {
-        $customers=User::where('level',1)->get();
+        $customers=User::where('level',1)->orderBy('id','desc')->get();
         return view('customers',compact('customers'));
     }
 
     public function addFile()
     {
-        $customer_files=User_File::where('user_id',Auth::user()->id)->get();
+        $customer_files=User_File::where('user_id',Auth::user()->id)->orderBy('id','desc')->get();
         return view('customer_files',compact('customer_files'));
     }
 
@@ -73,10 +73,7 @@ class HomeController extends Controller
             'path' => $upload_path,
             'user_id' => Auth::user()->id
         ]);
-
         return Redirect::to('/add-file');
-        //return redirect()->route('add-file');
-
     }
 
 }
