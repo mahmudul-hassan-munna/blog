@@ -53,6 +53,17 @@
 
                                 <ul class="dropdown-menu" role="menu">
                                     <li>
+
+                                        @if(Auth::user()->level==2)
+                                            <a href="{{ url('register-user') }}">Create Admin</a>
+                                            <a href="{{ url('customers') }}">Customers</a>
+                                        @elseif(Auth::user()->level==3)
+                                            <a href="{{ url('register-user') }}">Create Manager</a>
+                                            <a href="{{ url('customers') }}">Customers</a>
+                                        @endif
+
+
+
                                         <a href="{{ route('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
